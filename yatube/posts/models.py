@@ -9,6 +9,11 @@ class Group(models.Model):
     slug = models.SlugField("Строка идентификатор", unique=True)
     description = models.TextField("Описание группы")
 
+    class Meta:
+        ordering = ("title",)
+        verbose_name = "Группа"
+        verbose_name_plural = "Группы"
+
     def __str__(self):
         return self.title
 
@@ -77,6 +82,7 @@ class Comment(models.Model):
     class Meta:
         ordering = ("-created",)
         verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
 
 
 class Follow(models.Model):
@@ -92,3 +98,8 @@ class Follow(models.Model):
         verbose_name="Автор",
         related_name="following",
     )
+
+    class Meta:
+        ordering = ("user",)
+        verbose_name = "Подписчик"
+        verbose_name_plural = "Подписчики"

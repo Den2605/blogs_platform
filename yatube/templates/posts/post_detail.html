@@ -29,7 +29,7 @@
           </li>
           <li class="list-group-item">
             <a href="{% url 'posts:profile' post.author %}">
-              все посты пользователя
+              Все посты пользователя
             </a>
           </li>
         </ul>
@@ -43,7 +43,7 @@
         </p>
         {% if user == post.author %}
           <a class="btn btn-primary" href="{% url "posts:post_edit" post.id %}">
-            редактировать пост
+            Редактировать пост
           </a>
         {% endif %}
         {% include 'includes/comments.html' %}

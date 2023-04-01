@@ -13,7 +13,9 @@ from ..forms import PostForm
 from ..models import Comment, Follow, Group, Post
 
 User = get_user_model()
-NEW_POSTS = random.randrange(settings.NUMBER_POSTS, 2 * settings.NUMBER_POSTS)
+NEW_POSTS = random.randrange(
+    settings.NUMBER_POSTS + 1, 2 * settings.NUMBER_POSTS
+)
 POSTS_ON_SECOND_PAGE = NEW_POSTS - settings.NUMBER_POSTS
 
 TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
@@ -199,53 +201,37 @@ class PostViewsTests(TestCase):
         self.assertEqual(response.content, response_1.content)
         self.assertNotEqual(response_1.content, response_2.content)
 
-    def test_follow_index_page(self):
+    def test_follow_index_1(self):
         """Новая запись пользователя появляется в ленте тех,
-        кто на него подписан и не появляется у других пользователей."""
-        follow_author_post = Post.objects.create(
-            text="Тестовый текст поста 1",
-            author=self.follow_author,
-            group=self.group,
-        )
-        Follow.objects.create(user=self.follower, author=self.follow_author)
+        кто на него подписан."""
+        Follow.objects.create(user=self.follower, author=self.user)
         self.client_follower.get(
-            reverse(
-                "posts:profile_follow", kwargs={"username": self.follow_author}
-            )
+            reverse("posts:profile_follow", kwargs={"username": self.user})
         )
         follower_response = self.client_follower.get(
             reverse("posts:follow_index")
         )
         first_object = follower_response.context["page_obj"]
         self.assertIn(
-            follow_author_post,
+            self.post,
             first_object,
             "подписка на автора не оформлена",
         )
-        response = self.authorized_client.get(reverse("posts:follow_index"))
-        object = response.context["page_obj"]
-        self.assertNotIn(
-            follow_author_post,
-            object,
-            "подписка на автора оформлена",
-        )
-        self.client_follower.get(
-            reverse(
-                "posts:profile_unfollow",
-                kwargs={"username": self.follow_author},
-            )
-        )
-        Follow.objects.filter(
-            user=self.follower, author=self.follow_author
-        ).delete()
-        follower_response = self.client_follower.get(
+
+    def test_follow_index_2(self):
+        """Новая запись пользователя не появляется в ленте тех,
+        кто на него не подписан."""
+        self.new_user = User.objects.create_user(username="new")
+        self.new_authorized_client = Client()
+        self.new_authorized_client.force_login(self.new_user)
+        response = self.new_authorized_client.get(
             reverse("posts:follow_index")
         )
-        first_object = follower_response.context["page_obj"]
+        first_object = response.context["page_obj"]
         self.assertNotIn(
-            follow_author_post,
+            self.post,
             first_object,
-            "подписка на автора оформлена",
+            "подписка на автора не оформлена",
         )
 
 

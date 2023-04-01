@@ -9,6 +9,10 @@
     {% for post in page_obj %}
       <article>
         {% include 'includes/post.html' %}
+        <a href="{% url 'posts:post_detail' post.id %}">
+          Подробная информация
+        </a>
+        <br>
         {% if not forloop.last %}<hr>{% endif %}
       </article>
       {% include 'posts/includes/paginator.html' %}
