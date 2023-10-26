@@ -20,11 +20,6 @@ Yatube использует open-source технологии:
 - [Python 3.10](https://www.python.org/downloads/release/python-3100/)
 - [Django 4.1](https://docs.djangoproject.com/en/4.1/releases/4.1/)
 
-Дополнительные технологии, не входящие в стек ЯП:
-
-- WYSIWYG Editor [CKEditor](https://ckeditor.com/)
-- [Redis](https://redis.io/)
-
 _Репозиторий на Github [ссылка](https://github.com/Den2605/blogs_platform)._
 ***
 
