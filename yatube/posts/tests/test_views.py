@@ -168,7 +168,7 @@ class PostViewsTests(TestCase):
                 kwargs={"slug": self.group_2.slug},
             )
         )
-        object = response.context.get("page_obj").object_list
+        object = response.context.get("page_obj")
         self.assertEqual(len(object), 0)
 
     def test_add_comment(self):

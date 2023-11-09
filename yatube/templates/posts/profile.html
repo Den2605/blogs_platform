@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% block header %}
-  Профайл пользователя {{ author }}
+  Профайл пользователя {{ author.username }}
 {% endblock %}
 {% block content %}
   <div class="container py-5">
     <div class="mb-5"> 
-      <h1>Все посты пользователя {{ author }}</h1>
+      <h1>Все посты пользователя {{ author.username }}</h1>
       <h3>Всего постов: {{ number_posts }} </h3>
       {% if author.id != request.user.id %}
         {% if following %}

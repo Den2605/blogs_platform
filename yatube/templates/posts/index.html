@@ -7,9 +7,10 @@
     <h1>
       Последние объявления на сайте 
     </h1>
+    {% include 'posts/includes/switcher.html' %} 
     {% load cache %}
     {% cache 20 index_page page_obj.number %}
-    {% include 'posts/includes/switcher.html' %} 
+    
     {% for post in page_obj %}
       <article>
         {% include 'includes/post.html' %}
